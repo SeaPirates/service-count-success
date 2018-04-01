@@ -1,7 +1,9 @@
 from flask import Flask
-from src.mysql.series import Series
-import os
+from flask import request
 from flask_mysqldb import MySQL
+import os
+from src.series.series import Series
+
 
 app = Flask(__name__)
 
@@ -13,9 +15,10 @@ mysql = MySQL(app)
 
 @app.route('/graphic', methods=['POST'])
 def api():
-    teste = Series(mysql)
+    series = Series(mysql)
+    params = request.data
     return app.response_class(
-        response=teste.metricas(),
+        response=series.metricas(params),
         status=200,
         mimetype='application/json'
     )
