@@ -1,5 +1,5 @@
 from flask import Flask
-from src.mysql.series import Series
+from src.series.series import Series
 import os
 from flask_mysqldb import MySQL
 
