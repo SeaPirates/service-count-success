@@ -8,22 +8,21 @@ class Series:
         self.exercicios = Exercicios()
 
     def metricas(self, params):
-        json_params = json.loads(params)
 
-        if (json_params['params']['banca'] == 'all'):
+        if (params['banca'] == 'all'):
             result = self.exercicios\
                 .select()\
                 .where(
-                    (self.exercicios.data_registro >= json_params['params']['date_begin']) &
-                    (self.exercicios.data_registro <= json_params['params']['date_end'])
+                    (self.exercicios.data_registro >= params['date_begin']) &
+                    (self.exercicios.data_registro <= params['date_end'])
                 ).count()
         else:
             result = self.exercicios \
                 .select() \
                 .where(
-                    (self.exercicios.banca == json_params['params']['banca']) &
-                    (self.exercicios.data_registro >= json_params['params']['date_begin']) &
-                    (self.exercicios.data_registro <= json_params['params']['date_begin'])
+                    (self.exercicios.banca == params['banca']) &
+                    (self.exercicios.data_registro >= params['date_begin']) &
+                    (self.exercicios.data_registro <= params['date_begin'])
                 ).count()
 
         self.exercicios.close()
