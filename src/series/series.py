@@ -15,16 +15,16 @@ class Series:
             result = self.exercicios\
                 .select()\
                 .where(
-                    (self.exercicios.data_registro >= datetime.date(json_params['params']['date_begin'])) &
-                    (self.exercicios.data_registro <= datetime.date(json_params['params']['date_end']))
+                    (self.exercicios.data_registro >= json_params['params']['date_begin']) &
+                    (self.exercicios.data_registro <= json_params['params']['date_end'])
                 ).count()
         else:
             result = self.exercicios \
                 .select() \
                 .where(
                     (self.exercicios.banca == json_params['params']['banca']) &
-                    (self.exercicios.data_registro >= datetime.date(json_params['params']['date_begin'])) &
-                    (self.exercicios.data_registro <= datetime.date(json_params['params']['date_end']))
+                    (self.exercicios.data_registro >= json_params['params']['date_begin']) &
+                    (self.exercicios.data_registro <= json_params['params']['date_begin'])
                 ).count()
 
         self.exercicios.close()
