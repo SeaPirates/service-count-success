@@ -1,6 +1,5 @@
 from flask import json
 from src.series.exercicios import Exercicios
-import datetime
 
 
 class Series:
