@@ -50,3 +50,4 @@ build-iPhoneSimulator/
 .rvmrc
 service
 *.pyc
+.idea
