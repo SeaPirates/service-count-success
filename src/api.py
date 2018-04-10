@@ -1,21 +1,61 @@
 from flask import Flask
+from flask import request
+from flask import json
 from src.series.series import Series
-import os
-from flask_mysqldb import MySQL
+from src.validade_auth import ValidadeAuth
 
 app = Flask(__name__)
 
-app.config['MYSQL_USER'] = os.environ['MYSQL_USER']
-app.config['MYSQL_PASSWORD'] = os.environ['MYSQL_PASS']
-app.config['MYSQL_HOST'] = os.environ['MYSQL_HOST']
-app.config['MYSQL_PORT'] = int(os.environ['MYSQL_PORT'])
-mysql = MySQL(app)
-
-@app.route('/graphic', methods=['POST'])
+@app.route('/', methods=['POST'])
 def api():
-    teste = Series(mysql)
-    return app.response_class(
-        response=teste.metricas(),
-        status=200,
-        mimetype='application/json'
-    )
+
+    params = json.loads(request.data)
+
+    validar_auth = ValidadeAuth()
+
+    isValid = validar_auth.validar(params['auth'])
+
+    try:
+        if (isValid['result']['validate']):
+            series = Series()
+            return app.response_class(
+                response=series.metricas(params['params']),
+                status=200,
+                mimetype='application/json'
+            )
+        else:
+            return app.response_class(
+                response=json.dumps(
+                    {
+                        "jsonrpc": "2.0",
+                        "id": "metricas",
+                        "result": json.dumps(
+                            {
+                                "status": "502",
+                                "status": isValid['result'],
+                                "message": "token invalido"
+                            }
+                        )
+                    }
+                ),
+                status=502,
+                mimetype='application/json'
+            )
+    except:
+        return app.response_class(
+            response=json.dumps(
+                {
+                    "jsonrpc": "2.0",
+                    "id": "metricas",
+                    "result": json.dumps(isValid['result'])
+                }
+            ),
+            status=200,
+            mimetype='application/json'
+        )
+
+
+
+
+
+
