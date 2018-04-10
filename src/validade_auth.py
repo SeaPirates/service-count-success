@@ -1,7 +1,7 @@
 import requests
 from flask import json
 
-class ValidadeAuth():
+class ValidadeAuth:
 
     def __init__(self):
         self.headers = {"Host": "metrics.auth.validate"}
