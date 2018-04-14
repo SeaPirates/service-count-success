@@ -1,10 +1,12 @@
 from flask import Flask
+from flask_cors import CORS
 from flask import request
 from flask import json
 from src.series.series import Series
 from src.validade_auth import ValidadeAuth
 
 app = Flask(__name__)
+cors = CORS(app)
 
 @app.route('/', methods=['POST'])
 def api():
